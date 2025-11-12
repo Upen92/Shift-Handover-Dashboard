@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Zendesk Ticket Dashboard</title>
+<style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; }
+        form { margin-bottom: 20px; }
+        input, select { margin: 5px; padding: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background-color: #f4f4f4; }
+        button { padding: 5px 10px; margin: 5px; }
+    </style>
+</head>
+<body>
+<h1>Zendesk Ticket Dashboard</h1>
+<form id="ticketForm">
+<input id="ticketId" placeholder="Ticket ID" required="" type="text"/>
+<select id="status" required="">
+<option value="">Select Status</option>
+<option value="Open">Open</option>
+<option value="In Progress">In Progress</option>
+<option value="Closed">Closed</option>
+</select>
+<select id="priority" required="">
+<option value="">Select Priority</option>
+<option value="Low">Low</option>
+<option value="Medium">Medium</option>
+<option value="High">High</option>
+</select>
+<input id="currentUpdate" placeholder="Current Update" required="" type="text"/>
+<button type="submit">Add Ticket</button>
+</form>
+<table id="ticketTable">
+<thead>
+<tr>
+<th>Ticket ID</th>
+<th>Status</th>
+<th>Priority</th>
+<th>Current Update</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<script>
+        const form = document.getElementById('ticketForm');
+        const tableBody = document.querySelector('#ticketTable tbody');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const ticketId = document.getElementById('ticketId').value;
+            const status = document.getElementById('status').value;
+            const priority = document.getElementById('priority').value;
+            const currentUpdate = document.getElementById('currentUpdate').value;
+
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>${ticketId}</td>
+                <td>${status}</td>
+                <td>${priority}</td>
+                <td>${currentUpdate}</td>
+                <td>
+                    <button onclick="editTicket(this)">Edit</button>
+                    <button onclick="deleteTicket(this)">Delete</button>
+                </td>
+            `;
+
+            tableBody.appendChild(row);
+            form.reset();
+        });
+
+        function editTicket(button) {
+            const row = button.parentElement.parentElement;
+            const cells = row.querySelectorAll('td');
+
+            const newStatus = prompt('Update Status:', cells[1].textContent);
+            const newPriority = prompt('Update Priority:', cells[2].textContent);
+            const newUpdate = prompt('Update Current Update:', cells[3].textContent);
+
+            if (newStatus !== null) cells[1].textContent = newStatus;
+            if (newPriority !== null) cells[2].textContent = newPriority;
+            if (newUpdate !== null) cells[3].textContent = newUpdate;
+        }
+
+        function deleteTicket(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+        }
+    </script>
+</body>
+</html>
